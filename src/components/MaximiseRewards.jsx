@@ -35,7 +35,7 @@ export default function MaximiseRewards() {
     };
 
 const handleRecommendationPage = () => {
-        navigate('recommendations');
+        navigate('/recommendations');
         };
 
   return (
@@ -60,8 +60,8 @@ const handleRecommendationPage = () => {
         <Tab label="Maximise Rewards" sx={tabValue === 2 ? {fontWeight: 'bold' } : {}} />
       </Tabs>
 
-      <Box variant="outlined" sx={{ borderColor: 'green', p: 2, borderRadius: 2, mt: 2 }}>
-        <Typography fontWeight="bold" variant="body2">
+      <Box variant="outlined" sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 2, mt: 2 }}>
+        <Typography fontWeight="bold" fontSize={25} variant="body2">
           Don't miss out on the chance to take full advantage of your rewards!
         </Typography>
         <Button variant="outlined" size="small" borderRadius="50%" 
@@ -79,7 +79,7 @@ const handleRecommendationPage = () => {
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="subtitle1" fontWeight="medium">{card.name}</Typography>
-                <Button variant="caption" color="text.secondary" onClick={handleTermsAndCondition}>Show T&Cs</Button>
+                <Button  color="text.secondary" onClick={handleTermsAndCondition}>Show T&Cs</Button>
               </Box>
               <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 1 }}>{card.number}</Typography>
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>

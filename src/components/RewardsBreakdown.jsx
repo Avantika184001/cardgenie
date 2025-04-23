@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from 'react'
 import { Box, Typography, Card, CardContent, IconButton } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
@@ -7,6 +7,8 @@ import StoreIcon from '@mui/icons-material/Store';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
 import { useNavigate } from 'react-router-dom';
+import Chart from './PieChart';
+
 
 const transactions = [
   { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100 },
@@ -36,11 +38,13 @@ export default function RewardsBreakdown({ onBack }) {
         </Box>
       </Box>
 
-      <Box mt={3} mb={2}>
+        <Chart id='chart' />
+
+      {/* <Box mt={3} mb={2}>
         <Typography variant="body2" fontWeight="medium">Travel</Typography>
         <Box width={100} height={100} borderRadius="50%" bgcolor="#e0f2f1" mx="auto" />
         <Typography variant="body2" fontWeight="medium" align="center">Retail</Typography>
-      </Box>
+      </Box>  */}
 
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
