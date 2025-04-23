@@ -8,7 +8,7 @@ const data = [
   { name: 'Shopping', value: 90 },
 ];
 
-// Shades of green
+// Green shades
 const COLORS = ['#2e7d32', '#388e3c', '#43a047', '#66bb6a', '#81c784'];
 
 const MyPieChart = () => (
@@ -17,6 +17,7 @@ const MyPieChart = () => (
       data={data}
       cx="50%"
       cy="50%"
+      innerRadius={60}  // Makes it a donut
       outerRadius={100}
       fill="#4caf50"
       dataKey="value"
