@@ -69,7 +69,9 @@ export default function RewardsBreakdown({ onBack }) {
   const [transactions, setTransactions] = useState([]); 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-    const [totalPoints, setTotalPoints] = useState(transactions.reduce((acc, curr) => acc + curr.points, 0));
+  const [totalPoints, setTotalPoints] = useState(
+    transactions.reduce((acc, curr) => acc + Number(curr.earned_points || 0), 0)
+  );
     const navigate = useNavigate();
     const handleBackButton = () => {
         navigate('/');
@@ -81,7 +83,6 @@ export default function RewardsBreakdown({ onBack }) {
         try {
           const response = await axios.post("http://localhost:5001/cardgenie/reward_points", { numericId });
           setTransactions(response.data.transactions);
-          console.log("transac: ",response.data.transactions);
         } catch (error) {
           setError("Error fetching reward points.");
         } finally {
@@ -91,23 +92,27 @@ export default function RewardsBreakdown({ onBack }) {
   
       if (numericId) fetchRewardPoints();
     }, [numericId]);
-  
 
-    const progress  = [{ name: "Progress", value: 75 }];
+    useEffect(() => {
+      const sum = transactions.reduce(
+        (acc, t) => acc + Number(t.earned_points || 0),
+        0
+      );
+      setTotalPoints(sum.toFixed(0));
+    }, [transactions]);
+  
     const handlePointChange = (index, value) => {
         const updatedTransactions = [...transactions];
-        updatedTransactions[index].points = parseInt(value) || 0;
+        updatedTransactions[index].earned_points = parseInt(value) || 0;
         setTransactions(updatedTransactions);
-        setTotalPoints(updatedTransactions.reduce((acc, curr) => acc + curr.points, 0));
+        setTotalPoints((updatedTransactions.reduce((acc, curr) => acc + Number(curr.earned_points).toFixed(0), 0)));
       };
     
     const getCategoryData = () => {
         const categoryMap = {};
-        transactions.forEach(({ category, points }) => {
-            console.log("category: ", category);
-          categoryMap[category] = (categoryMap[category] || 0) + points;
+        transactions.forEach(({ transaction_category, earned_points }) => {
+          categoryMap[transaction_category] = ((categoryMap[transaction_category] || 0) + earned_points);
         });
-        console.log(categoryMap)
 
         return Object.entries(categoryMap).map(([name, value]) => ({ name, value }));
       };    
@@ -150,15 +155,15 @@ export default function RewardsBreakdown({ onBack }) {
 
                       <Box display="flex" flexDirection="column" alignItems="flex-end">
                       <TextField
-                value={transaction.earned_points}
-                onChange={(e) => handlePointChange(index, e.target.value)}
-                type="number"
-                size="large"
-                InputProps={{
-                  endAdornment: <Typography sx={{ color: 'green', ml: 1 }}>points</Typography>
-                }}
-                sx={{ width: 150 }}
-              />
+                          value={Number(transaction.earned_points).toFixed(0)}
+                          onChange={(e) => handlePointChange(index, e.target.value)}
+                          type="number"
+                          size="large"
+                          InputProps={{
+                            endAdornment: <Typography sx={{ color: 'green', ml: 1 }}>points</Typography>
+                          }}
+                          sx={{ width: 150 }}
+                         />
                         <Typography variant="caption" color="text.secondary">{getDaysAgo(transaction.transaction_timestamp)}</Typography>
                       </Box>
 
