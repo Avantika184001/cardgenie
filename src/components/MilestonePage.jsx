@@ -14,22 +14,6 @@ import {
 const API_BASE = "http://127.0.0.1:5001/cardgenie";
 const PERIODS = ["Monthly", "Quarterly", "Yearly"];
 
-// const cards = [
-//   {
-//     cardName: "Bank of America Customized Cash Rewards credit card",
-//     Yearly: [
-//       { MileStone: "Spend ₹1L", Target: 100000, MilestoneReward: "₹2,000 cashback" },
-//       { MileStone: "Spend ₹3L", Target: 300000, MilestoneReward: "₹8,000 cashback" },
-//     ],
-//     Monthly: [
-//       { MileStone: "Spend ₹10k", Target: 10000, MilestoneReward: "₹200 cashback" },
-//     ],
-//     Quarterly: [
-//       { MileStone: "Spend ₹25k", Target: 25000, MilestoneReward: "₹700 cashback" },
-//     ],
-//   }
-  
-// ];
 
 // ---------- helpers ------------------------------------------------
 const calculateProgress = (required = 0, actual = 0) =>
@@ -102,7 +86,7 @@ export default function MilestonesPage({ numericId }) {
           (sum, t) => sum + parseFloat(t.transaction_value),
           0
         );
-        
+
         const newSpends = {
           Monthly:  Number(((totalSpendNow / 12) * 10).toFixed(2)), // round to 2 dp
           Quarterly: Number(((totalSpendNow / 4)  * 10).toFixed(2)),
@@ -114,14 +98,14 @@ export default function MilestonesPage({ numericId }) {
           {
             cardName: "Bank of America Customized Cash Rewards credit card",
             Yearly: [
-              { MileStone: "Spent " + newSpends["Yearly"], Target: 10000, MilestoneReward: "₹2,000 cashback" },
-              { MileStone: "Spent " + newSpends["Yearly"], Target: 30000, MilestoneReward: "₹8,000 cashback" },
+              { MileStone: "Spent $" + newSpends["Yearly"], Target: 10000, MilestoneReward: "$2,000 cashback" },
+              { MileStone: "Spent $" + newSpends["Yearly"], Target: 30000, MilestoneReward: "$8,000 cashback" },
             ],
             Monthly: [
-              { MileStone: "Spent " + newSpends["Monthly"], Target: 1000, MilestoneReward: "₹200 cashback" },
+              { MileStone: "Spent $" + newSpends["Monthly"], Target: 1000, MilestoneReward: "$200 cashback" },
             ],
             Quarterly: [
-              { MileStone: "Spent " + newSpends["Quarterly"], Target: 2500, MilestoneReward: "₹700 cashback" },
+              { MileStone: "Spent $" + newSpends["Quarterly"], Target: 2500, MilestoneReward: "$700 cashback" },
             ],
           }
           
@@ -189,11 +173,7 @@ export default function MilestonesPage({ numericId }) {
                 progress={calculateProgress(m.Target, spends[tab] ?? 0)}
               />
             ))
-          ) : (
-            <Typography variant="body2" color="text.secondary">
-              No milestones for {tab.toLowerCase()}.
-            </Typography>
-          )}
+          ) : null}
         </Box>
       ))}
     </Box>
