@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Box, Typography, Card, CardContent, IconButton, TextField } from "@mui/material";
+import { Box, Typography, Card, CardContent, IconButton, TextField, Tabs, Tab } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -8,8 +8,7 @@ import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import FlightTakeoffIcon from '@mui/icons-material/FlightTakeoff'
 import { useNavigate } from 'react-router-dom';
 import Chart from './PieChart';
-
-
+import MilestonesPage from './MilestonePage';
 
 const initialTransactions = [
     { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "shopping" },
@@ -28,17 +27,16 @@ const initialTransactions = [
   { icon: <FlightTakeoffIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
 ];
 
-//   const categoryData = getCategoryData();
 
 export default function RewardsBreakdown({ onBack }) {
-
+    const [tabValue, setTabValue] = React.useState(0); 
     const [transactions, setTransactions] = useState(initialTransactions);
     const [totalPoints, setTotalPoints] = useState(transactions.reduce((acc, curr) => acc + curr.points, 0));
     const navigate = useNavigate();
     const handleBackButton = () => {
         navigate('/');
     };
-
+    const progress  = [{ name: "Progress", value: 75 }];
     const handlePointChange = (index, value) => {
         const updatedTransactions = [...transactions];
         updatedTransactions[index].points = parseInt(value) || 0;
@@ -66,6 +64,8 @@ export default function RewardsBreakdown({ onBack }) {
         <IconButton onClick={handleBackButton}><ArrowBackIcon /></IconButton>
         <Typography variant="h6" fontWeight="bold" ml={1}>Cards</Typography>
       </Box>
+
+      <MilestonesPage  numericId="3650546107940865"/>
 
       <Box display="flex" alignItems="center" gap={2}>
         <DonutLargeIcon sx={{ fontSize: 40, color: '#008500' }} />
