@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react'
-import { Box, Typography, Card, CardContent, IconButton } from "@mui/material";
+import React, { useState } from 'react'
+import { Box, Typography, Card, CardContent, IconButton, TextField } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import LanguageIcon from '@mui/icons-material/Language';
@@ -10,18 +10,55 @@ import { useNavigate } from 'react-router-dom';
 import Chart from './PieChart';
 
 
-const transactions = [
-  { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100 },
-  { icon: <StoreIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100 },
-  { icon: <ShoppingBagIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100 },
-  { icon: <FlightTakeoffIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100 },
+
+const initialTransactions = [
+    { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "shopping" },
+  { icon: <StoreIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "shopping" },
+  { icon: <ShoppingBagIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "shopping" },
+  { icon: <FlightTakeoffIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "shopping" },
+
+  { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "flight" },
+  { icon: <StoreIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "flight" },
+  { icon: <ShoppingBagIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "flight" },
+
+  { icon: <FlightTakeoffIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
+  { icon: <LanguageIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
+  { icon: <StoreIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
+  { icon: <ShoppingBagIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
+  { icon: <FlightTakeoffIcon />, id: "<<TransactionID>>", desc: "xyz", amount: "<<amount>>", points: 100, category: "retail" },
 ];
 
+//   const categoryData = getCategoryData();
+
 export default function RewardsBreakdown({ onBack }) {
+
+    const [transactions, setTransactions] = useState(initialTransactions);
+    const [totalPoints, setTotalPoints] = useState(transactions.reduce((acc, curr) => acc + curr.points, 0));
     const navigate = useNavigate();
     const handleBackButton = () => {
         navigate('/');
     };
+
+    const handlePointChange = (index, value) => {
+        const updatedTransactions = [...transactions];
+        updatedTransactions[index].points = parseInt(value) || 0;
+        setTransactions(updatedTransactions);
+        setTotalPoints(updatedTransactions.reduce((acc, curr) => acc + curr.points, 0));
+      };
+    
+    const getCategoryData = () => {
+        const categoryMap = {};
+        transactions.forEach(({ category, points }) => {
+            console.log("category: ", category);
+          categoryMap[category] = (categoryMap[category] || 0) + points;
+        });
+        console.log(categoryMap)
+
+        return Object.entries(categoryMap).map(([name, value]) => ({ name, value }));
+      };    
+
+    let chartProps = getCategoryData();
+    console.log(chartProps);
 
   return (
     <Box sx={{ p: 2, maxWidth: 500, mx: 'auto' }}>
@@ -38,19 +75,13 @@ export default function RewardsBreakdown({ onBack }) {
         </Box>
       </Box>
 
-        <Chart id='chart' />
-
-      {/* <Box mt={3} mb={2}>
-        <Typography variant="body2" fontWeight="medium">Travel</Typography>
-        <Box width={100} height={100} borderRadius="50%" bgcolor="#e0f2f1" mx="auto" />
-        <Typography variant="body2" fontWeight="medium" align="center">Retail</Typography>
-      </Box>  */}
+        <Chart id='chart'  chartProps={chartProps} />
 
       <Card variant="outlined" sx={{ borderRadius: 2 }}>
         <CardContent>
           <Typography variant="h6" fontWeight="bold">Past Transactions with Rewards Points</Typography>
           <Typography fontStyle="italic" mt={1}>Total Rewards</Typography>
-          <Typography variant="h5" fontStyle="italic" color="#008500" mb={2}>1900 points</Typography>
+          <Typography variant="h5" fontStyle="italic" color="#008500" mb={2}>{totalPoints}</Typography>
 
           {transactions.map((tx, index) => (
             <Box key={index} display="flex" alignItems="center" justifyContent="space-between" mb={1}>
@@ -61,7 +92,16 @@ export default function RewardsBreakdown({ onBack }) {
                   <Typography variant="caption">{tx.desc} &nbsp;&nbsp; {tx.amount}</Typography>
                 </Box>
               </Box>
-              <Typography color="#008500">+{tx.points} points</Typography>
+              <TextField
+                value={tx.points}
+                onChange={(e) => handlePointChange(index, e.target.value)}
+                type="number"
+                size="large"
+                InputProps={{
+                  endAdornment: <Typography sx={{ color: 'green', ml: 1 }}>points</Typography>
+                }}
+                sx={{ width: 150 }}
+              />
             </Box>
           ))}
         </CardContent>

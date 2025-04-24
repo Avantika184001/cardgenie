@@ -1,8 +1,9 @@
 import React from "react";
-import { Card, CardContent, Typography, Button, Tabs, Tab, Box, IconButton } from "@mui/material";
+import { Card, CardContent, Typography, Button, Tabs, Tab, Box, IconButton, Dialog, Slide } from "@mui/material";
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import TermsAndCondition from "./TermsAndCondition";
 import { useNavigate } from 'react-router-dom';
 
 const creditCards = [
@@ -21,10 +22,34 @@ const creditCards = [
     number: "1234 5678 9101 XXXX",
     owner: "Mona Lisa",
   },
+  {
+    name: "Spiderman CARD",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+  },
+  {
+    name: "Black Panther CARD",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+  },
+  {
+    name: "Thor CARD",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+  },
 ];
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
 
 export default function MaximiseRewards() {
   const [tabValue, setTabValue] = React.useState(2); 
+  const [openDialog, setOpenDialog] = React.useState(false);
+
+  const handleOpenDialog = () => setOpenDialog(true);
+  const handleCloseDialog = () => setOpenDialog(false);
+
   const navigate = useNavigate();
   const handleShowRewards = () => {
   navigate('/rewards');
@@ -60,13 +85,12 @@ const handleRecommendationPage = () => {
         <Tab label="Maximise Rewards" sx={tabValue === 2 ? {fontWeight: 'bold' } : {}} />
       </Tabs>
 
-      <Box variant="outlined" sx={{ bgcolor: '#f5f5f5', p: 2, borderRadius: 2, mt: 2 }}>
+      <Box variant="outlined" sx={{ p: 2, borderRadius: 2, mt: 2 }}>
         <Typography fontWeight="bold" fontSize={25} variant="body2">
           Don't miss out on the chance to take full advantage of your rewards!
         </Typography>
-        <Button variant="outlined" size="small" borderRadius="50%" 
-                sx={{ mt: 1, color: '#008500', borderColor: '#008500', 
-                borderRadius: '50' }} onClick={handleRecommendationPage}>
+        <Button variant="outlined" size="small" sx={{borderRadius:"200px !important",
+                mt: 1, color: '#008500', borderColor: '#008500'}} onClick={handleRecommendationPage}>
           💰 Click here to learn more!
         </Button>
       </Box>
@@ -75,11 +99,11 @@ const handleRecommendationPage = () => {
 
       <Box display="flex" flexDirection="column" gap={2} mt={2}>
         {creditCards.map((card, index) => (
-          <Card key={index} variant="outlined" sx={{ borderRadius: 2 }}>
+          <Card key={index} variant="outlined" sx={{ borderRadius: 2}}>
             <CardContent>
               <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Typography variant="subtitle1" fontWeight="medium">{card.name}</Typography>
-                <Button  color="text.secondary" onClick={handleTermsAndCondition}>Show T&Cs</Button>
+                <Button variant="caption" color="text.secondary" onClick={handleOpenDialog}>Show T&Cs</Button>
               </Box>
               <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 1 }}>{card.number}</Typography>
               <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
@@ -90,6 +114,19 @@ const handleRecommendationPage = () => {
           </Card>
         ))}
       </Box>
+
+      <Dialog
+        open={openDialog}
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseDialog}
+        fullWidth
+        PaperProps={{ sx: { borderRadius: '16px 16px 0 0', position: 'absolute', bottom: 0 } }}
+      >
+        <Box sx={{ p: 2 }}>
+          <TermsAndCondition />
+        </Box>
+      </Dialog>
     </Box>
   );
 }
