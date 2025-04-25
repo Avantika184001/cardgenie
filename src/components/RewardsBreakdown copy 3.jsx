@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Card, CardContent, IconButton, TextField, Divider, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
+import { Box, Typography, Card, CardContent, IconButton, TextField, Divider } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import FastfoodIcon from '@mui/icons-material/Fastfood';
@@ -7,20 +7,10 @@ import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import LanguageIcon from '@mui/icons-material/Language';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import HomeIcon from '@mui/icons-material/Home';
-import FilterListIcon from '@mui/icons-material/FilterList';
 import { useNavigate } from 'react-router-dom';
 import Chart from './PieChart';
 import MilestonesPage from './MilestonePage';
 import dayjs from 'dayjs';
-import './RewardsBreakdown.css'
-import axios from "axios";
-
-const API_BASE = "http://127.0.0.1:5001/cardgenie";
-const NUMERICID1 = "3650546107940865"
-const NUMERICID2 = "8029402705166337"
-const NUMERICID3 = "11474069555773441"
-
-const NUMERICID = NUMERICID1
 
 // Theme colors
 const themeColors = {
@@ -70,52 +60,39 @@ export default function RewardsBreakdown() {
   const [transactions, setTransactions] = useState(api_data['transactions']);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const numericId = NUMERICID;
-  const [categoryFilter, setCategoryFilter] = useState('All');
-  const [availableCategories, setAvailableCategories] = useState(['All']);
+  const customerId = "3650546107940865";
   
   // Fetch transaction data
-  useEffect(() => {
-    if (!numericId) return;    
-    const fetchTransactions = async () => {
-      setLoading(true);
-      try {
-        // In a real app, you would fetch this data from an API
-        // For now, we're assuming you'll provide the data
-        const response = await axios.post(`${API_BASE}/reward_points`, { numericId });
-        const data = await response.data;
-        console.log(data);
-        console.log("seting the state with this data:", data.transactions)
-        setTransactions(data.transactions);
+  // useEffect(() => {
+  //   const fetchTransactions = async () => {
+  //     setLoading(true);
+  //     try {
+  //       // In a real app, you would fetch this data from an API
+  //       // For now, we're assuming you'll provide the data
+  //       // const response = await fetch('your-api-endpoint');
+  //       // const data = await response.json();
+  //       // setTransactions(data.transactions);
         
-        // You'll paste your data here
-        // setTransactions(yourDataHere);
+  //       // You'll paste your data here
+  //       // setTransactions(yourDataHere);
         
-        // For testing, we'll use an empty array that you'll replace
-        // setTransactions([]);
-      } catch (err) {
-        console.error("Error fetching transactions:", err);
-        setError("Failed to load transaction data");
-      } finally {
-        setLoading(false);
-      }
-    };
+  //       // For testing, we'll use an empty array that you'll replace
+  //       setTransactions([]);
+  //     } catch (err) {
+  //       console.error("Error fetching transactions:", err);
+  //       setError("Failed to load transaction data");
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
     
-    fetchTransactions();
-  }, [numericId]);
-  
-  // Update available categories when transactions change
-  useEffect(() => {
-    if (transactions.length > 0) {
-      const categories = ['All', ...new Set(transactions.map(t => t.transaction_category))];
-      setAvailableCategories(categories);
-    }
-  }, [transactions]);
+  //   fetchTransactions();
+  // }, []);
   
   // Calculate total points
   const calculateTotalPoints = () => {
-    return Math.round(transactions.reduce((total, transaction) => 
-      total + (parseFloat(transaction.earned_points) || 0), 0));
+    return transactions.reduce((total, transaction) => 
+      total + (parseFloat(transaction.earned_points) || 0), 0).toFixed(2);
   };
   
   // Handle navigation
@@ -131,30 +108,9 @@ export default function RewardsBreakdown() {
   };
   
   // Calculate category data for chart
-  // const getCategoryData = () => {
-  //   const categoryMap = {};
-    
-  //   transactions.forEach(transaction => {
-  //     const category = transaction.transaction_category;
-  //     const points = parseFloat(transaction.earned_points) || 0;
-      
-  //     if (!categoryMap[category]) {
-  //       categoryMap[category] = 0;
-  //     }
-      
-  //     categoryMap[category] += points;
-  //   });
-    
-  //   return Object.entries(categoryMap).map(([name, value]) => ({ 
-  //     name, 
-  //     value: Math.round(value) 
-  //   }));
-  // };
-
   const getCategoryData = () => {
     const categoryMap = {};
     
-    // Sum up points by category
     transactions.forEach(transaction => {
       const category = transaction.transaction_category;
       const points = parseFloat(transaction.earned_points) || 0;
@@ -166,38 +122,10 @@ export default function RewardsBreakdown() {
       categoryMap[category] += points;
     });
     
-    // Convert to array of objects for sorting
-    let categoryArray = Object.entries(categoryMap).map(([name, value]) => ({ 
+    return Object.entries(categoryMap).map(([name, value]) => ({ 
       name, 
-      value: Math.round(value) 
+      value: parseFloat(value.toFixed(2)) 
     }));
-    
-    // Sort by value in descending order
-    categoryArray.sort((a, b) => b.value - a.value);
-    
-    // Take top 5 categories
-    const topCategories = categoryArray.slice(0, 5);
-    
-    // Sum up the rest into "Others" if there are more than 5 categories
-    if (categoryArray.length > 5) {
-      const othersValue = categoryArray
-        .slice(5)
-        .reduce((sum, category) => sum + category.value, 0);
-      
-      topCategories.push({
-        name: "Others",
-        value: othersValue
-      });
-    }
-    
-    return topCategories;
-  };
-  
-
-  // Filter transactions based on selected category
-  const getFilteredTransactions = () => {
-    if (categoryFilter === 'All') return transactions;
-    return transactions.filter(t => t.transaction_category === categoryFilter);
   };
 
   if (loading) {
@@ -221,7 +149,6 @@ export default function RewardsBreakdown() {
 
   const chartData = getCategoryData();
   const totalPointsValue = calculateTotalPoints();
-  const filteredTransactions = getFilteredTransactions();
 
   return (
     <Box sx={{ p: 2, maxWidth: 500, mx: 'auto' }}>
@@ -235,23 +162,23 @@ export default function RewardsBreakdown() {
 
       {/* Milestones Section */}
       <Box mb={4}>
-        <MilestonesPage numericId={numericId} />
+        <MilestonesPage numericId={customerId} />
       </Box>
 
       {/* Rewards Earned Section */}
-      <Card variant="outlined" sx={{ borderRadius: 2, mb: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+      <Card variant="outlined" sx={{ borderRadius: 2, mb: 3, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <CardContent>
           <Box display="flex" alignItems="center" gap={2} mb={2}>
             <DonutLargeIcon sx={{ fontSize: 40, color: themeColors.primary }} />
             <Box>
-              <Typography fontWeight="bold" variant="h7">Rewards Earned</Typography>
+              <Typography fontWeight="bold" variant="h6">Rewards Earned</Typography>
               <Typography color="text.secondary">Total Rewards by Category</Typography>
             </Box>
           </Box>
           
           {chartData.length > 0 ? (
-            <Box sx={{ mb: 0 }}>
-              <Chart id='category-chart' chartProps={chartData} className="donut_chart"/>
+            <Box sx={{ height: 250, mb: 2 }}>
+              <Chart id='category-chart' chartProps={chartData} />
             </Box>
           ) : (
             <Box sx={{ height: 100, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -264,45 +191,20 @@ export default function RewardsBreakdown() {
       {/* Transactions Section */}
       <Card variant="outlined" sx={{ borderRadius: 2, boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <CardContent>
-          <Typography variant="h7" fontWeight="bold" mb={1.1}>Past Transactions with Rewards Points</Typography>
+          <Typography variant="h6" fontWeight="bold" mb={1}>Past Transactions with Rewards Points</Typography>
           
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography color="text.secondary">Total Rewards</Typography>
             <Typography variant="h5" fontWeight="medium" color={themeColors.primary}>
               {totalPointsValue} points
             </Typography>
           </Box>
           
-          {/* Category Filter */}
-          <Box sx={{ mb: 0.5 }}>
-            <FormControl size="small" fullWidth>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <FilterListIcon fontSize="small" color="action" />
-                <Select
-                  value={categoryFilter}
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                  displayEmpty
-                  sx={{ flex: 1, fontSize: '0.9rem' }}
-                >
-                  {availableCategories.map((category) => (
-                    <MenuItem key={category} value={category}>
-                      {category}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-            </FormControl>
-          </Box>
-          
-          <Typography variant="caption" color="text.secondary" display="block" mb={0.5} sx={{ fontStyle: 'italic' }}>
-            Points are editable. Feel free to adjust if our calculations don't match your records.
-          </Typography>
-          
           <Divider sx={{ mb: 2 }} />
           
-          {filteredTransactions.length > 0 ? (
+          {transactions.length > 0 ? (
             <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
-              {filteredTransactions.map((transaction, index) => (
+              {transactions.map((transaction, index) => (
                 <Box 
                   key={transaction.transaction_id}
                   sx={{
@@ -310,16 +212,16 @@ export default function RewardsBreakdown() {
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     py: 1.5,
-                    borderBottom: index < filteredTransactions.length - 1 ? '1px solid #eee' : 'none'
+                    borderBottom: index < transactions.length - 1 ? '1px solid #eee' : 'none'
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', flex: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', flex: 1 }}>
                     <Box sx={{ mr: 2 }}>
                       {getCategoryIcon(transaction.transaction_category)}
                     </Box>
                     
                     <Box>
-                      <Typography fontWeight="medium" className='card_name'>
+                      <Typography fontWeight="medium">
                         {transaction.transaction_card_name}
                       </Typography>
                       <Typography variant="caption" color="text.secondary">
@@ -331,9 +233,9 @@ export default function RewardsBreakdown() {
                     </Box>
                   </Box>
                   
-                  <Box sx={{ flex: 1, maxWidth: '30%' }}>
+                  <Box sx={{ minWidth: 120 }}>
                     <TextField
-                      value={Math.round(transaction.earned_points)}
+                      value={transaction.earned_points}
                       onChange={(e) => handlePointChange(index, e.target.value)}
                       type="number"
                       size="small"
@@ -349,9 +251,7 @@ export default function RewardsBreakdown() {
             </Box>
           ) : (
             <Box sx={{ py: 4, textAlign: 'center' }}>
-              <Typography color="text.secondary">
-                {categoryFilter === 'All' ? 'No transaction data available' : 'No transactions in this category'}
-              </Typography>
+              <Typography color="text.secondary">No transaction data available</Typography>
             </Box>
           )}
         </CardContent>

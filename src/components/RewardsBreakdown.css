@@ -1,11 +1,17 @@
-.input_points{
-  margin-left:120px !important;
+.donut_chart{
+  width:100% !important;
 }
 
-.css-jupps9-MuiInputBase-root-MuiOutlinedInput-root{
-  height: 40px;
+.recharts-wrapper{
+  height: 250px !important;
+  width:100% !important;
 }
 
-.transaction_tile{
-  margin-bottom: 15px;
+
+.card_name{
+  width:80%;
+}
+
+.css-1nb3mp2{
+  height: auto !important;
 }

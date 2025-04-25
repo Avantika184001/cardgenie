@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, CardContent, Box, Typography, IconButton, Collapse, CircularProgress } from "@mui/material";
+import React, { useState } from "react";
+import { Card, CardContent, Box, Typography, IconButton, Collapse } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
 import { useNavigate } from 'react-router-dom';
@@ -12,16 +12,23 @@ import CompareArrowsIcon from '@mui/icons-material/CompareArrows';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import CreditCardIcon from '@mui/icons-material/CreditCard';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import dayjs from 'dayjs';
-import axios from 'axios';
 
-const API_BASE = "http://127.0.0.1:5001/cardgenie";
-const NUMERICID1 = "3650546107940865"
-const NUMERICID2 = "8029402705166337"
-const NUMERICID3 = "11474069555773441"
-
-const NUMERICID = NUMERICID1
+const api_data = {
+  "recommendation_text": "In the last 7 days, you did 26 transactions out of those 9 were of Food & Dining, if you choose Food & Dining as your customized category in Bank of America Customized Cash Rewards credit card, you could have earned 150 more points by using your Bank of America Customized Cash Rewards credit card instead of Amazon Prime Visa on Food & Dining categories. Below are the details",
+  "wrong_transactions": [
+    {"actual_reward_points":87,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":130,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f688-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-14 14:57:51+00:00","transaction_value":43.28},
+    {"actual_reward_points":9,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":14,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"c335c981-1ddf-11f0-af25-4eb079146a67","transaction_timestamp":"2025-04-17 14:13:42+00:00","transaction_value":4.61},
+    {"actual_reward_points":82,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":123,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Auto & Transport","transaction_id":"8ff8f682-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:24+00:00","transaction_value":41.0},
+    {"actual_reward_points":9,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":14,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f690-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-16 14:20:35+00:00","transaction_value":4.61},
+    {"actual_reward_points":27,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":41,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"9518c3d4-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-07 07:00:00+00:00","transaction_value":13.58},
+    {"actual_reward_points":20,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":30,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"9518c3d7-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-10 07:00:00+00:00","transaction_value":9.88},
+    {"actual_reward_points":20,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":30,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f683-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:30+00:00","transaction_value":9.88},
+    {"actual_reward_points":11,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":17,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f684-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:25+00:00","transaction_value":5.54},
+    {"actual_reward_points":11,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":16,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"c335c980-1ddf-11f0-af25-4eb079146a67","transaction_timestamp":"2025-04-17 14:13:43+00:00","transaction_value":5.48},
+    {"actual_reward_points":22,"optimal_card_name":"Bank of America Customized Cash Rewards credit card","potential_reward_points":33,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f68e-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:04+00:00","transaction_value":11.05}
+  ]
+};
 
 // Theme colors
 const themeColors = {
@@ -168,75 +175,23 @@ const EmptyState = () => {
   );
 };
 
-// Error state component when API call fails
-const ErrorState = ({ onRetry }) => {
-  return (
-    <Card variant="outlined" sx={{ borderRadius: 2, mt: 2, p: 3, textAlign: 'center' }}>
-      <ErrorOutlineIcon sx={{ fontSize: 60, color: '#d32f2f', mb: 2 }} />
-      <Typography variant="h6" fontWeight="bold">
-        Something went wrong
-      </Typography>
-      <Typography variant="body1" sx={{ mt: 1 }}>
-        We couldn't load your card recommendations at this time.
-      </Typography>
-      <Box sx={{ mt: 3, display: 'flex', justifyContent: 'center' }}>
-        <IconButton 
-          onClick={onRetry}
-          sx={{ 
-            backgroundColor: themeColors.primary, 
-            color: '#fff',
-            '&:hover': { backgroundColor: themeColors.primaryDark }
-          }}
-        >
-          <Typography variant="button" sx={{ px: 2 }}>Try Again</Typography>
-        </IconButton>
-      </Box>
-    </Card>
-  );
-};
-
 export default function RecommendationPage({ onBack }) {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [data, setData] = useState(null);
-  const numericId = NUMERICID;
-  
-  const fetchRecommendations = async () => {
-    setLoading(true);
-    setError(false);
-    
-    try {
-      const response = await axios.post(`${API_BASE}/card_recommendation`, { numericId });
-      
-      setData(response.data);
-      setLoading(false);
-    } catch (err) {
-      console.error('Error fetching recommendations:', err);
-      setError(true);
-      setLoading(false);
-    }
-  };
-  
-  useEffect(() => {
-    fetchRecommendations();
-  }, []);
   
   const handleBackButton = () => {
     navigate('/');
   };
 
-  // Calculate total missed points if data is available
-  const totalMissedPoints = data?.wrong_transactions?.reduce(
+  // Calculate total missed points
+  const totalMissedPoints = api_data.wrong_transactions.reduce(
     (sum, tx) => sum + (tx.potential_reward_points - tx.actual_reward_points), 
     0
-  ) || 0;
+  );
 
-  // Sort transactions from most recent to oldest if data is available
-  const sortedTransactions = data?.wrong_transactions ? 
-    [...data.wrong_transactions].sort((a, b) => {
-      return dayjs(b.transaction_timestamp).valueOf() - dayjs(a.transaction_timestamp).valueOf();
-    }) : [];
+  // Sort transactions from most recent to oldest
+  const sortedTransactions = [...api_data.wrong_transactions].sort((a, b) => {
+    return dayjs(b.transaction_timestamp).valueOf() - dayjs(a.transaction_timestamp).valueOf();
+  });
 
   const hasWrongTransactions = sortedTransactions.length > 0;
 
@@ -254,41 +209,31 @@ export default function RecommendationPage({ onBack }) {
         </Box>
       </Box>
 
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-          <CircularProgress sx={{ color: themeColors.primary }} />
-        </Box>
-      ) : error ? (
-        <ErrorState onRetry={fetchRecommendations} />
-      ) : (
-        <>
-          <Card variant="outlined" sx={{ borderRadius: 2, mt: 3, mb: 3, backgroundColor: themeColors.primaryLight }}>
-            <CardContent>
-              <Typography fontWeight="bold" variant="body1">
-                {data.recommendation_text}
-              </Typography>
-              {hasWrongTransactions && (
-                <Typography variant="body2" fontStyle="italic" mt={1} sx={{ color: themeColors.primaryDark }}>
-                  You missed out on approximately {totalMissedPoints} points in your recent transactions.
-                </Typography>
-              )}
-            </CardContent>
-          </Card>
-
-          {hasWrongTransactions ? (
-            <>
-              <Typography variant="h6" fontWeight="bold" sx={{ mt: 3, mb: 2 }}>
-                Transactions with Missed Rewards ({sortedTransactions.length})
-              </Typography>
-
-              {sortedTransactions.map((transaction, index) => (
-                <TransactionTile key={transaction.transaction_id || index} transaction={transaction} />
-              ))}
-            </>
-          ) : (
-            <EmptyState />
+      <Card variant="outlined" sx={{ borderRadius: 2, mt: 3, mb: 3, backgroundColor: themeColors.primaryLight }}>
+        <CardContent>
+          <Typography fontWeight="bold" variant="body1">
+            {api_data.recommendation_text}
+          </Typography>
+          {hasWrongTransactions && (
+            <Typography variant="body2" fontStyle="italic" mt={1} sx={{ color: themeColors.primaryDark }}>
+              You missed out on approximately {totalMissedPoints} points in the last 7 days.
+            </Typography>
           )}
+        </CardContent>
+      </Card>
+
+      {hasWrongTransactions ? (
+        <>
+          <Typography variant="h6" fontWeight="bold" sx={{ mt: 3, mb: 2 }}>
+            Transactions with Missed Rewards ({sortedTransactions.length})
+          </Typography>
+
+          {sortedTransactions.map((transaction, index) => (
+            <TransactionTile key={index} transaction={transaction} />
+          ))}
         </>
+      ) : (
+        <EmptyState />
       )}
     </Box>
   );

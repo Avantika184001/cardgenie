@@ -14,14 +14,14 @@ const COLORS = [
     '#43a047',
     '#66bb6a',
     '#81c784',
-    // '#1b5e20', // deeper forest green
-    // '#4caf50', // classic material green
-    // '#7cb342', // yellow‑green
-    // '#8bc34a', // light leaf green
-    // '#9ccc65', // soft spring green
-    // '#aed581', // muted pastel green
-    // '#c5e1a5', // light, fresh green
-    // '#dcedc8', // very pale mint
+    '#1b5e20', // deeper forest green
+    '#4caf50', // classic material green
+    '#7cb342', // yellow‑green
+    '#8bc34a', // light leaf green
+    '#9ccc65', // soft spring green
+    '#aed581', // muted pastel green
+    '#c5e1a5', // light, fresh green
+    '#dcedc8', // very pale mint
   ];
   
 
@@ -33,7 +33,7 @@ const MyPieChart = ({chartProps}) => {
       data={chartProps}
       cx="50%"
       cy="50%"
-      innerRadius={60} 
+      innerRadius={60}  // Makes it a donut
       outerRadius={100}
       fill="#4caf50"
       dataKey="value"

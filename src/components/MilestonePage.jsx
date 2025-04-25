@@ -20,7 +20,7 @@ const calculateProgress = (required = 0, actual = 0) =>
   Math.min((actual / required) * 100, 100);
 
 const MilestoneRow = ({ milestone, progress }) => (
-  <Card variant="outlined" sx={{ mb: 2, borderRadius: 2 }}>
+  <Card variant="outlined" sx={{ mb: 2, borderRadius: 2, mt:2 }}>
     <CardContent>
       <Typography fontWeight="bold">{milestone.MileStone}</Typography>
       <Typography variant="body2" color="text.secondary">
@@ -146,7 +146,7 @@ export default function MilestonesPage({ numericId }) {
   if (err) return <Typography color="error">{err}</Typography>;
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 0 }}>
       <Tabs
         value={tab}
         onChange={(_, v) => setTab(v)}
@@ -160,8 +160,8 @@ export default function MilestonesPage({ numericId }) {
       </Tabs>
 
       {cards.map((card) => (
-        <Box key={card.cardName} sx={{ mt: 3 }}>
-          <Typography variant="h6" fontWeight="bold" mb={1}>
+        <Box key={card.cardName} sx={{ mt: 2 }}>
+          <Typography variant="h7" fontWeight="medium" mb={3}>
             {card.cardName.toUpperCase()}
           </Typography>
 
@@ -170,6 +170,7 @@ export default function MilestonesPage({ numericId }) {
               <MilestoneRow
                 key={idx}
                 milestone={m}
+                
                 progress={calculateProgress(m.Target, spends[tab] ?? 0)}
               />
             ))
