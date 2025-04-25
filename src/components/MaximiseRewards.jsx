@@ -6,52 +6,37 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import TermsAndCondition from "./TermsAndCondition";
 import { useNavigate } from 'react-router-dom';
+import './MaximiseRewards.css'
 
 const API_BASE = "http://127.0.0.1:5001/cardgenie";
+const NUMERICID1 = 3650546107940865
+const NUMERICID2 = 8029402705166337
+const NUMERICID3 = "11474069555773441"
 
-// const creditCards = [
-//   {
-//     name: "Bank of America Customized Cash Rewards Credit Card",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
-//   },
-//   {
-//     name: "Capital One Platinum Credit Card",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
+const NUMERICID = NUMERICID3
 
-//   },
-//   {
-//     name: "Chase Sapphire Preferred",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
+const creditCards = [
+  {
+    name: "Bank of America Customized Cash Rewards Credit Card",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+    card_type: "Reward Card"
+  },
+  {
+    name: "Capital One Platinum Credit Card",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+    card_type: "Reward Card"
 
-//   },
-//   {
-//     name: "Spiderman CARD",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
+  },
+  {
+    name: "Chase Sapphire Preferred",
+    number: "1234 5678 9101 XXXX",
+    owner: "Mona Lisa",
+    card_type: "Reward Card"
 
-//   },
-//   {
-//     name: "Black Panther CARD",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
-
-//   },
-//   {
-//     name: "Thor CARD",
-//     number: "1234 5678 9101 XXXX",
-//     owner: "Mona Lisa",
-//     card_type: "Reward Card"
-
-//   },
-// ];
+  }
+];
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -61,10 +46,10 @@ export default function MaximiseRewards() {
   const [tabValue, setTabValue] = React.useState(2); 
   const [openDialog, setOpenDialog] = React.useState(false);
   const [current_cc, setCC] = React.useState("");
-  const [cards, setCards] = useState([]);          // ← replaces hard‑coded array
+  const [cards, setCards] = useState(creditCards);          // ← replaces hard‑coded array
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
-  const numericId = "3650546107940865";
+  const numericId = NUMERICID;
 
   const handleOpenDialog = (cc_name) => () => {
     console.log(cc_name)
@@ -164,7 +149,7 @@ const handleRecommendationPage = () => {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Typography variant="subtitle1" fontWeight="medium">{card.name}</Typography>
-                  <Button variant="caption" color="text.secondary" onClick={handleOpenDialog(card.name)}>Show T&Cs</Button>
+                  <Button variant="caption" color="text.secondary" onClick={handleOpenDialog(card.name)} className="tnc">Show T&Cs</Button>
                 </Box>
                 <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 1 }}>{card.number}</Typography>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
