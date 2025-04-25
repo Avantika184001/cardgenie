@@ -57,7 +57,7 @@ const tnc_dump = {
     "Interest is charged on new purchases if the previous balance was not paid in full by the due date.",
     "Interest begins accruing on cash advances and transfers from the transaction date."
   ],
-  "Capital One Quicksilver Cash Rewards Credit Card": [
+  "Chase Sapphire Preferred credit card": [
     "0% introductory APR on purchases and transfers for the first 15 months.",
     "After the intro period, Purchase and Transfer APR will be 19.24%, 25.24%, or 29.24%, based on creditworthiness and market Prime Rate.",
     "Cash Advance APR: 29.24%, varies with the market Prime Rate.",
@@ -69,7 +69,7 @@ const tnc_dump = {
     "Earn 5% cash back on hotels and rental cars booked through Capital One Travel.",
     "Rewards do not expire as long as the account is open."
   ],
-  "Capital One QuicksilverOne Cash Rewards Credit Card": [
+  "Platinum Card from American Express": [
     "Purchase and Transfer APR: 29.74%, varies with the market Prime Rate.",
     "Cash Advance APR: 29.74%, varies with the market Prime Rate.",
     "Annual Fee: $39.",

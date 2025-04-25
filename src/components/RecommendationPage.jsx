@@ -21,7 +21,7 @@ const NUMERICID1 = "3650546107940865"
 const NUMERICID2 = "8029402705166337"
 const NUMERICID3 = "11474069555773441"
 
-const NUMERICID = NUMERICID1
+const NUMERICID = NUMERICID3
 
 // Theme colors
 const themeColors = {
@@ -151,19 +151,31 @@ const TransactionTile = ({ transaction }) => {
 };
 
 // Empty state component when there are no wrong transactions
-const EmptyState = () => {
+const EmptyState = ({ numericId, navigate }) => {
   return (
     <Card variant="outlined" sx={{ borderRadius: 2, mt: 2, p: 3, textAlign: 'center' }}>
-      <CheckCircleIcon sx={{ fontSize: 60, color: themeColors.primary, mb: 2 }} />
-      <Typography variant="h6" fontWeight="bold" sx={{ color: themeColors.primaryDark }}>
-        Great job!
-      </Typography>
+
       <Typography variant="body1" sx={{ mt: 1 }}>
-        You've been using the optimal credit cards for all your recent transactions.
+        For better card suggestions try using "Find a card" feature.
       </Typography>
-      <Typography variant="body2" sx={{ mt: 2, color: 'text.secondary' }}>
-        Continue using your cards wisely to maximize rewards.
-      </Typography>
+
+
+      {numericId === NUMERICID3 && (
+        <Box mt={3}>
+          <IconButton
+            onClick={() => navigate('/findacard')}
+            sx={{
+              backgroundColor: themeColors.primary,
+              color: '#fff',
+              '&:hover': { backgroundColor: themeColors.primaryDark },
+              px: 3,
+              borderRadius: 2,
+            }}
+          >
+            <Typography variant="button">Find A Card</Typography>
+          </IconButton>
+        </Box>
+      )}
     </Card>
   );
 };
@@ -286,8 +298,9 @@ export default function RecommendationPage({ onBack }) {
               ))}
             </>
           ) : (
-            <EmptyState />
-          )}
+            <EmptyState numericId={numericId} navigate={navigate} />
+
+          )} 
         </>
       )}
     </Box>
