@@ -20,7 +20,7 @@ const NUMERICID1 = "3650546107940865"
 const NUMERICID2 = "8029402705166337"
 const NUMERICID3 = "11474069555773441"
 
-const NUMERICID = NUMERICID3
+const NUMERICID = NUMERICID2
 
 // Theme colors
 const themeColors = {
@@ -62,12 +62,12 @@ const getCategoryIcon = (category) => {
   }
 };
 
-const api_data = {"transactions":[{"earned_points":86.56,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f688-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-14 14:57:51+00:00","transaction_value":43.28},{"earned_points":9.22,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"c335c981-1ddf-11f0-af25-4eb079146a67","transaction_timestamp":"2025-04-17 14:13:42+00:00","transaction_value":4.61},{"earned_points":3.2799999999999994,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"8ff8f687-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:27+00:00","transaction_value":1.64},{"earned_points":106.25,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f68c-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:08+00:00","transaction_value":21.25},{"earned_points":49.9,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"9518c3d2-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-07 07:00:00+00:00","transaction_value":24.95},{"earned_points":13.700000000000001,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f686-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:28+00:00","transaction_value":2.74},{"earned_points":82.0,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Auto & Transport","transaction_id":"8ff8f682-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:24+00:00","transaction_value":41.0},{"earned_points":25.35,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Bills & Utilities","transaction_id":"8ff8f68b-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:07+00:00","transaction_value":25.35},{"earned_points":9.22,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f690-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-16 14:20:35+00:00","transaction_value":4.61},{"earned_points":48.8,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"9518c3d3-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-07 07:00:00+00:00","transaction_value":24.4},{"earned_points":27.16,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"9518c3d4-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-07 07:00:00+00:00","transaction_value":13.58},{"earned_points":19.76,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"9518c3d7-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-10 07:00:00+00:00","transaction_value":9.88},{"earned_points":25.0,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f68f-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:05+00:00","transaction_value":5.0},{"earned_points":19.76,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f683-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:30+00:00","transaction_value":9.88},{"earned_points":11.080000000000002,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f684-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:25+00:00","transaction_value":5.54},{"earned_points":37.62,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"9518c3d6-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-09 07:00:00+00:00","transaction_value":18.81},{"earned_points":126.6,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"9518c3d1-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-07 07:00:00+00:00","transaction_value":63.3},{"earned_points":10.96,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"c335c980-1ddf-11f0-af25-4eb079146a67","transaction_timestamp":"2025-04-17 14:13:43+00:00","transaction_value":5.48},{"earned_points":5.5,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Bills & Utilities","transaction_id":"8ff8f689-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-14 14:57:50+00:00","transaction_value":5.5},{"earned_points":20.099999999999998,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f685-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:29+00:00","transaction_value":4.02},{"earned_points":208.9,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f68a-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:09+00:00","transaction_value":41.78},{"earned_points":70.2,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Bills & Utilities","transaction_id":"8ff8f681-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-13 17:04:26+00:00","transaction_value":70.2},{"earned_points":74.05000000000001,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"9518c3d0-16e7-11f0-a49d-e2e2d70a8c5c","transaction_timestamp":"2025-04-06 07:00:00+00:00","transaction_value":14.81},{"earned_points":99.3,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Groceries","transaction_id":"8ff8f680-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-11 16:45:21+00:00","transaction_value":49.65},{"earned_points":63.650000000000006,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Shopping","transaction_id":"8ff8f68d-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:06+00:00","transaction_value":12.73},{"earned_points":22.1,"transaction_card_name":"Amazon Prime Visa","transaction_category":"Food & Dining","transaction_id":"8ff8f68e-1bd4-11f0-b183-425f734d1f44","transaction_timestamp":"2025-04-15 14:29:04+00:00","transaction_value":11.05}]}
+const api_data = null;
 
 
 export default function RewardsBreakdown() {
   const navigate = useNavigate();
-  const [transactions, setTransactions] = useState(api_data['transactions']);
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const numericId = NUMERICID;
@@ -80,19 +80,10 @@ export default function RewardsBreakdown() {
     const fetchTransactions = async () => {
       setLoading(true);
       try {
-        // In a real app, you would fetch this data from an API
-        // For now, we're assuming you'll provide the data
         const response = await axios.post(`${API_BASE}/reward_points`, { numericId });
         const data = await response.data;
         console.log(data);
-        console.log("seting the state with this data:", data.transactions)
         setTransactions(data.transactions);
-        
-        // You'll paste your data here
-        // setTransactions(yourDataHere);
-        
-        // For testing, we'll use an empty array that you'll replace
-        // setTransactions([]);
       } catch (err) {
         console.error("Error fetching transactions:", err);
         setError("Failed to load transaction data");
@@ -129,31 +120,14 @@ export default function RewardsBreakdown() {
     updatedTransactions[index].earned_points = parseFloat(value) || 0;
     setTransactions(updatedTransactions);
   };
-  
-  // Calculate category data for chart
-  // const getCategoryData = () => {
-  //   const categoryMap = {};
-    
-  //   transactions.forEach(transaction => {
-  //     const category = transaction.transaction_category;
-  //     const points = parseFloat(transaction.earned_points) || 0;
-      
-  //     if (!categoryMap[category]) {
-  //       categoryMap[category] = 0;
-  //     }
-      
-  //     categoryMap[category] += points;
-  //   });
-    
-  //   return Object.entries(categoryMap).map(([name, value]) => ({ 
-  //     name, 
-  //     value: Math.round(value) 
-  //   }));
-  // };
+
 
   const getCategoryData = () => {
     const categoryMap = {};
-    
+    if (!transactions && transactions.length === 0) {
+      return [];
+    }
+  
     // Sum up points by category
     transactions.forEach(transaction => {
       const category = transaction.transaction_category;
