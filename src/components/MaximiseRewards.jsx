@@ -86,8 +86,9 @@ export default function MaximiseRewards() {
   }, [numericId]);
 
   const navigate = useNavigate();
-  const handleShowRewards = () => {
-  navigate('/rewards');
+
+  const handleShowRewards = (cardName) => {
+    navigate('/rewards', { state: { cardName } });
   };
   
   const handleTermsAndCondition = () => {
@@ -154,7 +155,7 @@ const handleRecommendationPage = () => {
                 <Typography variant="body2" sx={{ fontFamily: 'monospace', mt: 1 }}>{card.number}</Typography>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mt={1}>
                   <Typography variant="body2" color="text.secondary">{card.owner}</Typography>
-                  <Button size="small" sx={{ color: '#008500' }} onClick={handleShowRewards} >Show Rewards &gt;</Button>
+                  <Button size="small" sx={{ color: '#008500' }} onClick={() => handleShowRewards(card.name)} >Show Rewards &gt;</Button>
                 </Box>
               </CardContent>
             </Card>

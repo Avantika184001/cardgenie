@@ -48,7 +48,7 @@ const MilestoneRow = ({ milestone, progress }) => (
 );
 
 // ------------------------------------------------------------------
-export default function MilestonesPage({ numericId }) {
+export default function MilestonesPage({ numericId, cardName }) {
   const [tab, setTab] = useState("Monthly");
   const [cards, setCards] = useState([]);
   const [spends, setSpends] = useState({});
@@ -96,7 +96,7 @@ export default function MilestonesPage({ numericId }) {
          // build card skeleton from details
          const cardsSkeleton = [
           {
-            cardName: "Bank of America Customized Cash Rewards credit card",
+            cardName: cardName ,
             Yearly: [
               { MileStone: "Spent $" + newSpends["Yearly"], Target: 10000, MilestoneReward: "$2,000 cashback" },
               { MileStone: "Spent $" + newSpends["Yearly"], Target: 30000, MilestoneReward: "$8,000 cashback" },

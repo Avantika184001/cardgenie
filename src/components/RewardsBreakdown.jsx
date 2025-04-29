@@ -8,7 +8,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import HomeIcon from '@mui/icons-material/Home';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Chart from './PieChart';
 import MilestonesPage from './MilestonePage';
 import dayjs from 'dayjs';
@@ -62,10 +62,13 @@ const getCategoryIcon = (category) => {
   }
 };
 
-const api_data = null;
 
 
 export default function RewardsBreakdown() {
+
+  const location = useLocation();
+  const cardName = location.state?.cardName || '';
+  
   const navigate = useNavigate();
   const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -83,7 +86,14 @@ export default function RewardsBreakdown() {
         const response = await axios.post(`${API_BASE}/reward_points`, { numericId });
         const data = await response.data;
         console.log(data);
-        setTransactions(data.transactions);
+        if (data?.transactions) {
+          const filtered = data.transactions.filter(
+            txn => txn.transaction_card_name === cardName
+          );
+          setTransactions(filtered);
+        } else {
+          setTransactions([]);
+        }
       } catch (err) {
         console.error("Error fetching transactions:", err);
         setError("Failed to load transaction data");
@@ -91,7 +101,7 @@ export default function RewardsBreakdown() {
         setLoading(false);
       }
     };
-    
+  
     fetchTransactions();
   }, [numericId]);
   
@@ -209,7 +219,7 @@ export default function RewardsBreakdown() {
 
       {/* Milestones Section */}
       <Box mb={4}>
-        <MilestonesPage numericId={numericId} />
+        <MilestonesPage numericId={numericId} cardName={cardName}/>
       </Box>
 
       {/* Rewards Earned Section */}
