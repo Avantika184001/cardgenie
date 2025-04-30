@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Typography, IconButton } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import DonutLargeIcon from '@mui/icons-material/DonutLarge';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 // import tnc_dump from './tnc_data'
 import './tnc.css';
 
@@ -158,6 +158,11 @@ export default function TermsAndCondition({ onBack, cc_name="" }) {
             <li key={index} className="tnc_point">{detail}</li>
           ))}
         </ol>
+        </Box>
+        <Box>
+          <Typography fontWeight="bold" alignItems="center">
+            To Know more you can go to <Link className= 'linkClr' to="/terms-and-condtions">T&C</Link>
+          </Typography>
         </Box>
       </Box>
    </Box>

@@ -109,7 +109,14 @@ const TransactionTile = ({ transaction }) => {
             {expanded ? <ExpandLessIcon fontSize="inherit" /> : <ExpandMoreIcon fontSize="inherit" />}
           </Box>
         </Box>
-        
+        <Box display="flex" justifyContent="space-between" mt={1} ml={3} color={themeColors.primary}>
+                <Typography variant="body2">
+                
+                </Typography>
+                <Typography fontWeight="bold" sx={{ color: themeColors.primaryDark }}>
+                Potential rewards: {transaction.potential_reward_points} points
+                </Typography>
+              </Box>
         {/* Expanded view */}
         <Collapse in={expanded}>
           <Box mt={2} p={1} sx={{ backgroundColor: themeColors.primaryLight, borderRadius: 1 }}>
@@ -132,14 +139,6 @@ const TransactionTile = ({ transaction }) => {
                 <CreditCardIcon fontSize="small" sx={{ color: themeColors.primary }} />
                 <Typography variant="body2">
                   {transaction.optimal_card_name}
-                </Typography>
-              </Box>
-              <Box display="flex" justifyContent="space-between" mt={1} ml={3}>
-                <Typography variant="body2">
-                  Potential rewards:
-                </Typography>
-                <Typography variant="body2" fontWeight="bold" sx={{ color: themeColors.primaryDark }}>
-                  {transaction.potential_reward_points} points
                 </Typography>
               </Box>
             </Box>
